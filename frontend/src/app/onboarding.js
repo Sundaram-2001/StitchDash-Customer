@@ -3,6 +3,7 @@ import { Pressable, Text, TextInput, View, StyleSheet, ActivityIndicator } from 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getToken } from "../lib/tokenExtract";
 import { router } from "expo-router";
+import { supabase } from "../lib/supabase"; // 🟢 FIXED: Moved to the top layout scope
 
 export default function Onboarding() {
   const [name, setName] = useState("");
@@ -11,38 +12,39 @@ export default function Onboarding() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
 
-  //handling the submision
   const handleSubmit = async () => {
-    console.log(
-      "the form submission has been initialized!"
-    )
     setLoading(true);
-    console.log("Submitting:", { name, email, phoneNumber, address });
-    
     try {
       const token = await getToken();
-      console.log("token fetched")
+      
       const response = await fetch("https://frisbee-sprung-charbroil.ngrok-free.dev/api/v1/customer-onboard", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "true"
         },
-        body: JSON.stringify({
-          name,
-          email,
-          address,
-          phoneNumber
-        })
+        body: JSON.stringify({ name, email, address, phoneNumber })
       });
 
       const result = await response.json();
-      console.log("response received")
+
       if (response.ok) {
-        console.log("Profile updated successfully in the db", result);
         router.replace("/home");
       } else {
         console.error("Server rejected the data:", result.error);
+        
+        // Catch expired session tokens or server-side 401 rejections
+        const errMessage = result.error?.toLowerCase() || "";
+        if (response.status === 401 || errMessage.includes("expired") || errMessage.includes("token") || errMessage.includes("invalid")) {
+          alert("Session expired. Kindly login again!");
+          
+          // Clear the corrupt device state cleanly
+          await supabase.auth.signOut(); 
+          router.replace("/login");
+          return;
+        }
+
         alert(result.error || "Failed to save data");
       }
     } catch (error) {
@@ -94,7 +96,7 @@ export default function Onboarding() {
 
         <Pressable
           disabled={loading} 
-          onPress={handleSubmit} // 🟢 FIXED: Added the onPress trigger event handler!
+          onPress={handleSubmit}
           style={({ pressed }) => [
             styles.button,
             loading && styles.buttonDisabled,
