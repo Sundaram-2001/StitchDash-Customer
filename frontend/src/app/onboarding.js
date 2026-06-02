@@ -40,7 +40,7 @@ export default function Onboarding() {
       console.log("response received")
       if (response.ok) {
         console.log("Profile updated successfully in the db", result);
-        router.replace("/(tabs)/dashboard");
+        router.replace("/home");
       } else {
         console.error("Server rejected the data:", result.error);
         alert(result.error || "Failed to save data");

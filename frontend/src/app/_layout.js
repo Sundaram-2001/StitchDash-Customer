@@ -19,7 +19,9 @@ export default function RootLayout() {
           .select("account_type")
           .eq("id", session.user.id) 
           .single()
-
+        if(profileError){
+          console.log("query execution failed:",profileError)
+        }
         // Profile ris not there, route to onboarding page
         if (!profile || profileError) {
           router.replace("/onboarding")
@@ -35,7 +37,7 @@ export default function RootLayout() {
         }
 
         // session and profile exists so go to dashboard
-        router.replace("/dashboard")
+        router.replace("/home")
       } catch (error) {
         console.error("Unexpected authentication routing failure:", error)
         router.replace("/login")
