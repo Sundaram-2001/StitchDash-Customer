@@ -1,6 +1,19 @@
 import { Text, View } from "react-native";
-export default function Home(){
+import { useUser } from "../context/UserContext";
+
+export function Home(){
+    const {profile}=useUser()
+    if(!profile){
+        return(
+            <Text>Profile not found</Text>
+        )
+    }
     return(
-        <Text>this is the home page</Text>
+        <View>
+            <Text>customer information</Text>
+            <View>
+                <Text>{profile.name}</Text>
+            </View>
+        </View>
     )
 }
