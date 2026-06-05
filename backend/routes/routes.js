@@ -21,7 +21,7 @@ routes.post("/customer-onboard",verifyUser,async(req,res)=>{
     }try
     {const {data,error}=await supabaseAdmin.
     from("users")
-    .insert([
+    .upsert([
         {id:verifiedUser.id,
             name,
             email,

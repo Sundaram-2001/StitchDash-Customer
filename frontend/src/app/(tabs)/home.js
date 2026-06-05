@@ -1,19 +1,9 @@
-import { Text, View } from "react-native";
-import { useUser } from "../context/UserContext";
+import { Text, TextComponent, View } from "react-native";
 
-export function Home(){
-    const {profile}=useUser()
-    if(!profile){
-        return(
-            <Text>Profile not found</Text>
-        )
-    }
+export default function Home(){
     return(
         <View>
-            <Text>customer information</Text>
-            <View>
-                <Text>{profile.name}</Text>
-            </View>
+            <Text>this is the home page</Text>
         </View>
     )
 }
