@@ -11,7 +11,6 @@ export default function Home() {
     const initializeHomeFeed = async () => {
       try {
         setLoading(true);
-        // Keep hardware GPS active for the dynamic header title look
         const geoPoint = await getDeviceLocality(); 
         setLocationName(`${geoPoint.locality}, ${geoPoint.city}`);
       } catch (err) {
@@ -36,10 +35,9 @@ export default function Home() {
 
   return (
     <View style={styles.centerContainer}>
-      {/* 🟢 Sets the title bar of the native layout framework */}
       <Tabs.Screen options={{ headerTitle: `Delivering to: ${locationName}` }} />
 
-      {/* 🟢 Minimalist visible placeholder */}
+      
       <Text style={styles.mainText}>This is home screen</Text>
     </View>
   );
