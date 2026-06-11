@@ -1,13 +1,17 @@
 import { router, Stack } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { supabase } from "../lib/supabase";
+// import * as Location from "expo-location";
 
-// 🟢 Change to default export so Expo Router handles mounting states perfectly
+
 export default function RootLayout() {
+  // const [coords, setCoords] = useState({ latitude: 17.3850, longitude: 78.4867 });
+
   useEffect(() => {
     const checkProfileAndSession = async () => {
       try {
+        
         const { data: { session } } = await supabase.auth.getSession();
         
         if (!session) {
@@ -45,7 +49,7 @@ export default function RootLayout() {
           return;
         }
 
-        // Both session and profile exist cleanly
+        
         console.log("BOOT LOGIC: Target validation cleared. Sending home! 🚀");
         router.replace("/home");
 
@@ -55,15 +59,14 @@ export default function RootLayout() {
       }
     };
 
-    // 1. Initial boot-up execution check
+    
     checkProfileAndSession();
     
-    // 2. Continuous runtime state event stream
+    
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log("AUTH STATE EVENT CHANGED:", event);
       
       if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
-        // 🟢 FIXED: Call it empty so it cleanly uses the internal async await declaration frame
         checkProfileAndSession(); 
       }
       if (event === "SIGNED_OUT") {
@@ -75,7 +78,12 @@ export default function RootLayout() {
   }, []); 
 
   return (
-    <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
+    <Stack 
+      screenOptions={{ 
+        headerShown: false, 
+        gestureEnabled: false,
+      }}
+    >
       <Stack.Screen name="index" />
       <Stack.Screen name="login" />
       <Stack.Screen name="onboarding" />
