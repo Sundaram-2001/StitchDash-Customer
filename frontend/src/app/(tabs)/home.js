@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { StyleSheet, View, Text, ActivityIndicator, TextInput, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, ActivityIndicator, TextInput, TouchableOpacity, ScrollView } from "react-native";
 import { getDeviceLocality } from "../../../utils/location";
 import { useEffect, useState } from "react";
 
@@ -80,7 +80,31 @@ export default function Home() {
           <Text style={styles.cardSubtitle}>Premium Outfits</Text>
         </TouchableOpacity>
       </View>
-      
+      <View>
+        <Text>How it works?</Text>
+      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.horizontalScrollPadding}
+      >
+        <View style={styles.stepCard}>
+          <Text style={styles.stepNumber}>01</Text>
+          <Text style={styles.stepTitle}>Book Service</Text>
+          <Text style={styles.stepDescription}>Select the alteration or stitching type you need online.</Text>
+        </View>
+        <View style={styles.stepCard}>
+          <Text style={styles.stepNumber}>02</Text>
+          <Text style={styles.stepTitle}>Doorstep Pickup</Text>
+          <Text style={styles.stepDescription}>An agent collects your fabric or sample measurements garment.</Text>
+        </View>
+        <View style={styles.stepCard}>
+          <Text style={styles.stepNumber}>03</Text>
+          <Text style={styles.stepTitle}>Perfect Fit</Text>
+          <Text style={styles.stepDescription}>Expert local tailors stitch it, and we deliver it right back.</Text>
+        </View>
+      </ScrollView>
+      <View style={{ height: 40 }} />
     </View>
   );
 }
@@ -96,6 +120,51 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#ffffff", 
+  },
+  sectionHeaderContainer: {
+    paddingHorizontal: 20,
+    marginTop: 28,  
+    marginBottom: 14, 
+  },
+  sectionTitleText: {
+    fontSize: 19,
+    fontWeight: "700",
+    color: "#1f1f1f",
+    letterSpacing: -0.3,
+  },
+  horizontalScrollPadding: {
+    paddingHorizontal: 16,
+    gap: 12, 
+  },
+  stepCard: {
+    width: 210,
+    backgroundColor: "#ffffff",
+    borderWidth: 1,
+    borderColor: "#f1f3f4",
+    borderRadius: 16,
+    padding: 16,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.02,
+    shadowRadius: 6,
+    elevation: 1,
+  },
+  stepNumber: {
+    fontSize: 24,
+    fontWeight: "800",
+    color: "#e6f4ea", 
+    marginBottom: 4,
+  },
+  stepTitle: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#1f1f1f",
+    marginBottom: 4,
+  },
+  stepDescription: {
+    fontSize: 12,
+    color: "#757575",
+    lineHeight: 17,
   },
   loadingText: {
     marginTop: 14,
