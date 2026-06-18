@@ -6,20 +6,30 @@ export default function TabsLayout() {
         screenOptions={{
         headerShown: true,
         tabBarActiveTintColor: "#208450", 
-        tabBarStyle: {
-            backgroundColor: "#fff",
-            borderTopWidth: 1,
-            borderTopColor: "#eee",
-            height: 60, 
-            paddingBottom: 8,
+        // 1. 🟢 Force the top navigation header background to be white
+        headerStyle: {
+          backgroundColor: "#ffffff",
         },
-        }}
+        // 2. 🟢 Remove the bottom border/shadow line under the header globally
+        headerShadowVisible: false, 
+        
+        // 3. 🟢 Force the bottom tab navigation bar background to be white
+        tabBarStyle: {
+          backgroundColor: "#ffffff",
+          borderTopWidth: 1,
+          borderTopColor: "#eee",
+          height: 60, 
+          paddingBottom: 8,
+          elevation: 0, 
+        },
+      }}
     >
       {/* 1. HOME TAB */}
         <Tabs.Screen
         name="home"
         options={{
-            title: "Home", 
+            headerShadowVisible:false,
+            backgroundColor: '#ffffff'
         }}
         />
 

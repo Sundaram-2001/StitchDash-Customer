@@ -1,62 +1,86 @@
-import { useEffect, useState } from "react";
-import { Text, View, ActivityIndicator, StyleSheet, TouchableOpacity } from "react-native";
 import { Tabs } from "expo-router";
+import { StyleSheet, View, Text, ActivityIndicator, TextInput, TouchableOpacity } from "react-native";
 import { getDeviceLocality } from "../../../utils/location";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [locationName, setLocationName] = useState("Loading location...");
+  const [location, setLocation] = useState("Loading Location....");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const initializeHomeFeed = async () => {
+    const initializeHome = async () => {
       try {
         setLoading(true);
-        const geoPoint = await getDeviceLocality(); 
-        setLocationName(`${geoPoint.locality}, ${geoPoint.city}`);
+        const geopoint = await getDeviceLocality();
+        setLocation(`${geopoint.locality}, ${geopoint.city}`);
       } catch (err) {
-        console.error("Frontend Location Error:", err);
-        setLocationName("Gachibowli, Hyderabad");
+        console.error("Frontend error occured:", err);
+        setLocation("Gachibowli, Hyderabad");
       } finally {
         setLoading(false);
       }
     };
 
-    initializeHomeFeed();
-  }, []);
+    initializeHome();
+  }, []); 
 
   if (loading) {
     return (
       <View style={styles.centerContainer}>
         <ActivityIndicator size="large" color="#006d3d" />
-        <Text style={styles.loadingText}>Fetching location coordinates...</Text>
+        <Text style={styles.loadingText}>Configuring your home feed...</Text>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <Tabs.Screen options={{ headerTitle: `Delivering to: ${locationName}` }} />
-
-      <Text style={styles.mainText}>Hello, what are you looking for today?</Text>
+      <Tabs.Screen options={{ headerTitle: `Delivering to: ${location}` }} />
       
-      <View style={styles.listContainer}>
-        <TouchableOpacity activeOpacity={0.7} style={styles.listItem}>
-          <Text style={styles.itemEmoji}>✂️</Text>
-          <Text style={styles.itemText}>Alteration & Fitting</Text>
+      {/* 🔍 Search Input Capsule */}
+      <View style={styles.searchBarContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search for boutiques, tailors etc.."
+          placeholderTextColor="#8a8a8e"
+          returnKeyType="search"
+          autoCorrect={false}
+        />
+      </View>
+
+      
+      <View style={styles.sectionHeaderContainer}>
+        <Text style={styles.quickServicesText}>Quick Services</Text>
+      </View>
+
+      {/* 🗺️ Service Menu List Grid */}
+      <View style={styles.gridContainer}>
+        <TouchableOpacity activeOpacity={0.7} style={styles.gridCard}>
+          <View style={[styles.iconWrapper, { backgroundColor: "#e6f4ea" }]}>
+            <Text style={styles.cardEmoji}>✂️</Text>
+          </View>
+          <Text style={styles.cardTitle}>Alterations</Text>
+          <Text style={styles.cardSubtitle}>Resize & Repair</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity activeOpacity={0.7} style={styles.gridCard}>
+          <View style={[styles.iconWrapper, { backgroundColor: "#e8f0fe" }]}>
+            <Text style={styles.cardEmoji}>👔</Text>
+          </View>
+          <Text style={styles.cardTitle}>Custom Stitching</Text>
+          <Text style={styles.cardSubtitle}>Built from scratch</Text>
         </TouchableOpacity>
 
         
-        <TouchableOpacity activeOpacity={0.7} style={styles.listItem}>
-          <Text style={styles.itemEmoji}>👔</Text>
-          <Text style={styles.itemText}>Custom Stitching</Text>
-        </TouchableOpacity>
-
-        
-        <TouchableOpacity activeOpacity={0.7} style={styles.listItem}>
-          <Text style={styles.itemEmoji}>✨</Text>
-          <Text style={styles.itemText}>Festive & Wedding Wear</Text>
+        <TouchableOpacity activeOpacity={0.7} style={styles.gridCard}>
+          <View style={[styles.iconWrapper, { backgroundColor: "#fef7e0" }]}>
+            <Text style={styles.cardEmoji}>✨</Text>
+          </View>
+          <Text style={styles.cardTitle}>Boutiques</Text>
+          <Text style={styles.cardSubtitle}>Premium Outfits</Text>
         </TouchableOpacity>
       </View>
+      
     </View>
   );
 }
@@ -64,53 +88,88 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f9f9ff",
-    paddingHorizontal: 24,
-    paddingTop: 40,
+    backgroundColor: "#ffffff", 
+    paddingTop: 12, 
   },
   centerContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f9f9ff",
+    backgroundColor: "#ffffff", 
   },
   loadingText: {
-    marginTop: 12,
-    color: "#4c4546",
-    fontSize: 14,
+    marginTop: 14,
+    color: "#757575",
+    fontSize: 15,
+    fontWeight: "500",
   },
-  mainText: {
+  
+  searchBarContainer: {
+    backgroundColor: "#f1f3f4", 
+    marginHorizontal: 16,
+    paddingHorizontal: 16,
+    height: 50,
+    borderRadius: 24, 
+    justifyContent: "center",
+  },
+  searchInput: {
+    fontSize: 16,
+    color: "#1f1f1f",
+    width: "100%",
+    fontWeight: "400",
+  },
+  
+  sectionHeaderContainer: {
+    paddingHorizontal: 20,
+    marginTop: 28,  
+    marginBottom: 16, 
+  },
+  quickServicesText: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#151c27",
-    marginBottom: 24,
+    color: "#1f1f1f",
+    letterSpacing: -0.3,
   },
-  listContainer: {
-    gap: 16, 
+  
+  gridContainer: {
+    paddingHorizontal: 16,
+    gap: 12, 
   },
-  listItem: {
+  gridCard: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#ffffff",
-    paddingVertical: 18,
-    paddingHorizontal: 20,
-    borderRadius: 14,
+    padding: 14,
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: "#e2e8f8",
-    // Subtle shadow layout for iOS & Android
-    shadowColor: "#151c27",
+    borderColor: "#f1f3f4",
+    // Premium soft elevation shadows
+    shadowColor: "#000000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 6,
-    elevation: 2,
+    shadowOpacity: 0.03,
+    shadowRadius: 8,
+    elevation: 1,
   },
-  itemEmoji: {
-    fontSize: 22,
+  iconWrapper: {
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 16,
   },
-  itemText: {
+  cardEmoji: {
+    fontSize: 22,
+  },
+  cardTitle: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#151c27",
+    color: "#1f1f1f",
+    flex: 1, 
   },
+  cardSubtitle: {
+    fontSize: 13,
+    color: "#757575",
+    fontWeight: "400",
+  }
 });
