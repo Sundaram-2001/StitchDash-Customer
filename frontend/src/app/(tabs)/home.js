@@ -1,20 +1,21 @@
 import { Tabs } from "expo-router";
-import { StyleSheet, View, Text, ActivityIndicator, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Image, ActivityIndicator } from "react-native";
 import { getDeviceLocality } from "../../../utils/location";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"; 
 
 export default function Home() {
-  const [location, setLocation] = useState("Loading Location....");
-  const [loading, setLoading] = useState(true);
+  const [location, setLocation] = useState("Loading Location..");
+  const [loading, setLoading] = useState(true); 
 
+  
   useEffect(() => {
     const initializeHome = async () => {
       try {
         setLoading(true);
-        const geopoint = await getDeviceLocality();
-        setLocation(`${geopoint.locality}, ${geopoint.city}`);
+        const geopoint = await getDeviceLocality(); 
+        setLocation(`${geopoint.locality}, ${geopoint.city}`); 
       } catch (err) {
-        console.error("Frontend error occured:", err);
+        console.error("Frontend error occurred:", err);
         setLocation("Gachibowli, Hyderabad");
       } finally {
         setLoading(false);
@@ -34,137 +35,72 @@ export default function Home() {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.masterContainer} showsVerticalScrollIndicator={false}>
       <Tabs.Screen options={{ headerTitle: `Delivering to: ${location}` }} />
       
-      {/* 🔍 Search Input Capsule */}
-      <View style={styles.searchBarContainer}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search for boutiques, tailors etc.."
-          placeholderTextColor="#8a8a8e"
-          returnKeyType="search"
-          autoCorrect={false}
-        />
+      
+      <View style={styles.headerTextWrapper}>
+        <Text style={styles.serifHeading}>
+          Tailored for you.
+        </Text>
       </View>
 
       
-      <View style={styles.sectionHeaderContainer}>
-        <Text style={styles.quickServicesText}>Quick Services</Text>
+      <View style={styles.buttonListGroup}> 
+        <TouchableOpacity activeOpacity={0.6} style={styles.menuButton}>
+          <Text style={styles.buttonTitle}>ALTERATIONS</Text>
+          <Text style={styles.buttonSubtitle}>Refine your existing fit</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity activeOpacity={0.6} style={styles.menuButton}>
+          <Text style={styles.buttonTitle}>CUSTOM STITCHING</Text>
+          <Text style={styles.buttonSubtitle}>Made from scratch to measure</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity activeOpacity={0.6} style={styles.menuButton}>
+          <Text style={styles.buttonTitle}>BOUTIQUE</Text>
+          <Text style={styles.buttonSubtitle}>Curated artisanal collections</Text>
+        </TouchableOpacity>
       </View>
 
-      {/* 🗺️ Service Menu List Grid */}
-      <View style={styles.gridContainer}>
-        <TouchableOpacity activeOpacity={0.7} style={styles.gridCard}>
-          <View style={[styles.iconWrapper, { backgroundColor: "#e6f4ea" }]}>
-            <Text style={styles.cardEmoji}>✂️</Text>
-          </View>
-          <Text style={styles.cardTitle}>Alterations</Text>
-          <Text style={styles.cardSubtitle}>Resize & Repair</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity activeOpacity={0.7} style={styles.gridCard}>
-          <View style={[styles.iconWrapper, { backgroundColor: "#e8f0fe" }]}>
-            <Text style={styles.cardEmoji}>👔</Text>
-          </View>
-          <Text style={styles.cardTitle}>Custom Stitching</Text>
-          <Text style={styles.cardSubtitle}>Built from scratch</Text>
-        </TouchableOpacity>
-
+      
+      <View style={styles.featuredSection}>
+        <Text style={styles.sectionLabel}>FEATURED CRAFT</Text>
         
-        <TouchableOpacity activeOpacity={0.7} style={styles.gridCard}>
-          <View style={[styles.iconWrapper, { backgroundColor: "#fef7e0" }]}>
-            <Text style={styles.cardEmoji}>✨</Text>
+        <View style={styles.artisanCard}>
+          <View style={styles.artisanLeftRow}>
+            <Image 
+              source={{ uri: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80' }} 
+              style={styles.avatarImage}
+            />
+            <View>
+              <Text style={styles.artisanName}>Master Elias</Text>
+              <Text style={styles.artisanRole}>Bespoke Specialist</Text>
+            </View>
           </View>
-          <Text style={styles.cardTitle}>Boutiques</Text>
-          <Text style={styles.cardSubtitle}>Premium Outfits</Text>
-        </TouchableOpacity>
+          
+          <View style={styles.ratingBadge}>
+            <Text style={styles.ratingText}>★ 4.9</Text>
+          </View>
+        </View>
       </View>
-      <View>
-        <Text>How it works?</Text>
-      </View>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.horizontalScrollPadding}
-      >
-        <View style={styles.stepCard}>
-          <Text style={styles.stepNumber}>01</Text>
-          <Text style={styles.stepTitle}>Book Service</Text>
-          <Text style={styles.stepDescription}>Select the alteration or stitching type you need online.</Text>
-        </View>
-        <View style={styles.stepCard}>
-          <Text style={styles.stepNumber}>02</Text>
-          <Text style={styles.stepTitle}>Doorstep Pickup</Text>
-          <Text style={styles.stepDescription}>An agent collects your fabric or sample measurements garment.</Text>
-        </View>
-        <View style={styles.stepCard}>
-          <Text style={styles.stepNumber}>03</Text>
-          <Text style={styles.stepTitle}>Perfect Fit</Text>
-          <Text style={styles.stepDescription}>Expert local tailors stitch it, and we deliver it right back.</Text>
-        </View>
-      </ScrollView>
-      <View style={{ height: 40 }} />
-    </View>
+
+      <View style={styles.bottomSpacer} />
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  masterContainer: {
     flex: 1,
-    backgroundColor: "#ffffff", 
-    paddingTop: 12, 
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#ffffff", 
-  },
-  sectionHeaderContainer: {
-    paddingHorizontal: 20,
-    marginTop: 28,  
-    marginBottom: 14, 
-  },
-  sectionTitleText: {
-    fontSize: 19,
-    fontWeight: "700",
-    color: "#1f1f1f",
-    letterSpacing: -0.3,
-  },
-  horizontalScrollPadding: {
-    paddingHorizontal: 16,
-    gap: 12, 
-  },
-  stepCard: {
-    width: 210,
     backgroundColor: "#ffffff",
-    borderWidth: 1,
-    borderColor: "#f1f3f4",
-    borderRadius: 16,
-    padding: 16,
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.02,
-    shadowRadius: 6,
-    elevation: 1,
   },
-  stepNumber: {
-    fontSize: 24,
-    fontWeight: "800",
-    color: "#e6f4ea", 
-    marginBottom: 4,
-  },
-  stepTitle: {
-    fontSize: 15,
-    fontWeight: "600",
-    color: "#1f1f1f",
-    marginBottom: 4,
-  },
-  stepDescription: {
-    fontSize: 12,
-    color: "#757575",
-    lineHeight: 17,
+  
+  centerContainer: {
+    flex: 1,                  
+    justifyContent: "center",
+    alignItems: "center",     
+    backgroundColor: "#ffffff",
   },
   loadingText: {
     marginTop: 14,
@@ -172,73 +108,104 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "500",
   },
-  
-  searchBarContainer: {
-    backgroundColor: "#f1f3f4", 
-    marginHorizontal: 16,
-    paddingHorizontal: 16,
-    height: 50,
-    borderRadius: 24, 
-    justifyContent: "center",
+  headerTextWrapper: {
+    paddingHorizontal: 24,
+    marginTop: 56,
+    marginBottom: 48,
   },
-  searchInput: {
-    fontSize: 16,
-    color: "#1f1f1f",
+  serifHeading: {
+    fontSize: 46,
+    fontStyle: "italic",
+    fontFamily: "serif", 
+    color: "#0a0a0a",
+    letterSpacing: -0.5,
+  },
+  buttonListGroup: {
     width: "100%",
-    fontWeight: "400",
+    paddingHorizontal: 24,
   },
-  
-  sectionHeaderContainer: {
-    paddingHorizontal: 20,
-    marginTop: 28,  
-    marginBottom: 16, 
+  menuButton: {
+    width: "100%",
+    paddingVertical: 24,
+    borderBottomWidth: 1,
+    borderColor: "#f4f4f5",
+    alignItems: "flex-start", 
   },
-  quickServicesText: {
-    fontSize: 20,
+  buttonTitle: {
+    fontSize: 14,
     fontWeight: "700",
-    color: "#1f1f1f",
-    letterSpacing: -0.3,
+    color: "#09090b",
+    letterSpacing: 1.8, 
+    marginBottom: 4,
   },
-  
-  gridContainer: {
-    paddingHorizontal: 16,
-    gap: 12, 
+  buttonSubtitle: {
+    fontSize: 14,
+    fontWeight: "400",
+    color: "#a1a1aa", 
   },
-  gridCard: {
+  featuredSection: {
+    width: "100%",
+    paddingHorizontal: 24,
+    marginTop: 56,
+  },
+  sectionLabel: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: "#71717a",
+    letterSpacing: 2,
+    marginBottom: 16,
+  },
+  artisanCard: {
+    width: "100%",
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#ffffff",
-    padding: 14,
-    borderRadius: 16,
+    justifyContent: "space-between",
     borderWidth: 1,
-    borderColor: "#f1f3f4",
-    // Premium soft elevation shadows
+    borderColor: "#f4f4f5",
+    padding: 16,
+    borderRadius: 12,
+    backgroundColor: "#ffffff",
     shadowColor: "#000000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.03,
+    shadowOpacity: 0.02,
     shadowRadius: 8,
     elevation: 1,
   },
-  iconWrapper: {
+  artisanLeftRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  avatarImage: {
     width: 48,
     height: 48,
-    borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
+    borderRadius: 24,
+    backgroundColor: "#f4f4f5",
     marginRight: 16,
   },
-  cardEmoji: {
-    fontSize: 22,
-  },
-  cardTitle: {
+  artisanName: {
     fontSize: 16,
-    fontWeight: "600",
-    color: "#1f1f1f",
-    flex: 1, 
+    fontWeight: "700",
+    color: "#09090b",
   },
-  cardSubtitle: {
+  artisanRole: {
     fontSize: 13,
-    color: "#757575",
-    fontWeight: "400",
-  }
+    color: "#71717a",
+    marginTop: 2,
+  },
+  ratingBadge: {
+    backgroundColor: "#f8f8f8",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: "#f4f4f5",
+  },
+  ratingText: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: "#27272a",
+  },
+  bottomSpacer: {
+    height: 80,
+  },
 });

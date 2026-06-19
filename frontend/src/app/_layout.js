@@ -1,6 +1,7 @@
 import { router, Stack } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
+
 import { supabase } from "../lib/supabase";
 // import * as Location from "expo-location";
 

@@ -1,19 +1,15 @@
 import { Tabs } from "expo-router";
-
+import Ionicons from '@expo/vector-icons/Ionicons';
 export default function TabsLayout() {
     return (
     <Tabs
         screenOptions={{
         headerShown: true,
         tabBarActiveTintColor: "#208450", 
-        // 1. 🟢 Force the top navigation header background to be white
         headerStyle: {
           backgroundColor: "#ffffff",
         },
-        // 2. 🟢 Remove the bottom border/shadow line under the header globally
         headerShadowVisible: false, 
-        
-        // 3. 🟢 Force the bottom tab navigation bar background to be white
         tabBarStyle: {
           backgroundColor: "#ffffff",
           borderTopWidth: 1,
@@ -24,16 +20,28 @@ export default function TabsLayout() {
         },
       }}
     >
-      {/* 1. HOME TAB */}
+      
         <Tabs.Screen
         name="home"
         options={{
+          headerTitle:"📍 Locating you...",
+          headerTitleStyle: {
+          // color: "#a1a1aa", 
+      fontSize: 20,
+    },
             headerShadowVisible:false,
+            tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? "home" : "home-outline"}
+              size={size}
+              color={color}
+            />
+            ),
             backgroundColor: '#ffffff'
         }}
         />
 
-      {/* 2. CHECKOUT TAB */}
+      
         <Tabs.Screen
         name="checkout"
         options={{
@@ -41,7 +49,7 @@ export default function TabsLayout() {
         }}
         />
 
-      {/* 3. PROFILE TAB */}
+      
         <Tabs.Screen
         name="profile"
         options={{
