@@ -65,7 +65,11 @@ export default function TabsLayout() {
                 size={size}
                 color={color}
               />
-            )
+            ),  
+            headerTitle:"👤 Profile",
+            headerTitleStyle:{
+              fontWeight:600
+            }
         }}
         />
     </Tabs>
