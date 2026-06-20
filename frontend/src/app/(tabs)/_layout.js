@@ -27,7 +27,7 @@ export default function TabsLayout() {
           headerTitle:"📍 Locating you...",
           headerTitleStyle: {
           // color: "#a1a1aa", 
-      fontSize: 20,
+      fontSize: 18,
     },
             headerShadowVisible:false,
             tabBarIcon: ({ color, size, focused }) => (
@@ -46,6 +46,11 @@ export default function TabsLayout() {
         name="checkout"
         options={{
             title: "Checkout",
+            tabBarIcon:({color,size,focused})=>(
+              <Ionicons
+                name={focused?"profile":"profile-outline"}
+              />
+            )
         }}
         />
 
@@ -54,6 +59,13 @@ export default function TabsLayout() {
         name="profile"
         options={{
             title: "Profile",
+            tabBarIcon:({size,color,focused})=>(
+              <Ionicons
+                name={focused ? "person-circle" : "person-circle"}
+                size={size}
+                color={color}
+              />
+            )
         }}
         />
     </Tabs>

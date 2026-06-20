@@ -4,7 +4,7 @@ import { getDeviceLocality } from "../../../utils/location";
 import { useEffect, useState } from "react"; 
 
 export default function Home() {
-  const [location, setLocation] = useState("Loading Location..");
+  const [location, setLocation] = useState("📍 Loading Location..");
   const [loading, setLoading] = useState(true); 
 
   
@@ -36,7 +36,7 @@ export default function Home() {
 
   return (
     <ScrollView style={styles.masterContainer} showsVerticalScrollIndicator={false}>
-      <Tabs.Screen options={{ headerTitle: `Delivering to: ${location}` }} />
+      <Tabs.Screen options={{ headerTitle: `📍 Delivering to: ${location}` }} />
       
       
       <View style={styles.headerTextWrapper}>
