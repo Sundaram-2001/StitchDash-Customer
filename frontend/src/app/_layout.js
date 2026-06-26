@@ -1,18 +1,18 @@
 import { router, Stack } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Alert } from "react-native";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"; // 1. Import TanStack items
 
 import { supabase } from "../lib/supabase";
-// import * as Location from "expo-location";
 
+// 2. Initialize the global Query Client cache manager outside the component loop
+const queryClient = new QueryClient();
 
 export default function RootLayout() {
-  // const [coords, setCoords] = useState({ latitude: 17.3850, longitude: 78.4867 });
 
   useEffect(() => {
     const checkProfileAndSession = async () => {
       try {
-        
         const { data: { session } } = await supabase.auth.getSession();
         
         if (!session) {
@@ -50,9 +50,8 @@ export default function RootLayout() {
           return;
         }
 
-        
         console.log("BOOT LOGIC: Target validation cleared. Sending home! 🚀");
-        router.replace("/home");
+        router.replace("/(tabs)/home"); // 🟢 Updated path explicitly targeting your tabs folder configuration
 
       } catch (error) {
         Alert.alert("Something went wrong, but don't fret");
@@ -60,9 +59,7 @@ export default function RootLayout() {
       }
     };
 
-    
     checkProfileAndSession();
-    
     
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log("AUTH STATE EVENT CHANGED:", event);
@@ -79,15 +76,18 @@ export default function RootLayout() {
   }, []); 
 
   return (
-    <Stack 
-      screenOptions={{ 
-        headerShown: false, 
-        gestureEnabled: false,
-      }}
-    >
-      <Stack.Screen name="index" />
-      <Stack.Screen name="login" />
-      <Stack.Screen name="onboarding" />
-    </Stack>
+    <QueryClientProvider client={queryClient}>
+      <Stack 
+        screenOptions={{ 
+          headerShown: false, 
+          gestureEnabled: false,
+        }}
+      >
+        <Stack.Screen name="index" />
+        <Stack.Screen name="login" />
+        <Stack.Screen name="onboarding" />
+        <Stack.Screen name="(tabs)" /> 
+      </Stack>
+    </QueryClientProvider>
   );
 }

@@ -1,10 +1,19 @@
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { Tabs } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
+import { getToken } from "../../lib/tokenExtract";
+
 
 const fetchProfile = async () => {
+    const token=await getToken()
     try {
-    const response = await fetch("http://10.0.2.2:8080/fetchProfile");
+    const response = await fetch("https://frisbee-sprung-charbroil.ngrok-free.dev/profile",{
+        method:"GET",
+        headers:{
+            "Content_Type":"application/json",
+            "Authorization":`Bearer ${token}`
+        }
+    });
     
     if (!response.ok) {
         throw new Error("Unexpected Server Error");

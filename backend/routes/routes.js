@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import { verifyUser } from "../auth/verifyUser.js";
 import { supabaseAdmin } from "../db/db.js";
 
@@ -42,10 +42,32 @@ routes.post("/customer-onboard",verifyUser,async(req,res)=>{
     })
     }
     catch(err){
-        console.error("Erro occured:",err)
+        console.error("Error occured:",err)
         return res.status(500).json({
             error:"Internal Server Error!"
         })
     }
 })  
+
+routes.get("/profile",verifyUser,async(req,res)=>{
+    const verifiedUser=req.user
+    try {
+        const{data,error}=await supabaseAdmin.from("users")
+        .select("*")
+        .eq("id",verifiedUser.id)
+        .single()
+        if(error){
+            console.error("Unexpected error, ",error)
+            return res.status(500).json({
+                error:"Something went wrong, kindly contact support!"
+            })
+        }
+        return res.status(200).json(data)
+    } catch (error) {
+        console.error("Error occured in fetching data",error)
+        return res.status(500).json({
+            error:"Internal Server Error!"
+        })
+    }
+})
 export default routes;
