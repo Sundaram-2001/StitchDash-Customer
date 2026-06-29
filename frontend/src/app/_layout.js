@@ -1,11 +1,11 @@
 import { router, Stack } from "expo-router";
 import { useEffect } from "react";
 import { Alert } from "react-native";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"; // 1. Import TanStack items
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"; 
 
 import { supabase } from "../lib/supabase";
 
-// 2. Initialize the global Query Client cache manager outside the component loop
+
 const queryClient = new QueryClient();
 
 export default function RootLayout() {
@@ -51,7 +51,7 @@ export default function RootLayout() {
         }
 
         console.log("BOOT LOGIC: Target validation cleared. Sending home! 🚀");
-        router.replace("/(tabs)/home"); // 🟢 Updated path explicitly targeting your tabs folder configuration
+        router.replace("/(tabs)/home"); 
 
       } catch (error) {
         Alert.alert("Something went wrong, but don't fret");

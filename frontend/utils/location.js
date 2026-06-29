@@ -17,7 +17,6 @@ export const getDeviceLocality = async () => {
             const requestResult = await Location.requestForegroundPermissionsAsync();
             status = requestResult.status;
         }
-
         
         if (status !== "granted") {
             console.log("Location permission denied by user. Deploying safety fallback.");

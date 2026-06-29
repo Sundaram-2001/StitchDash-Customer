@@ -1,9 +1,12 @@
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
-import { Tabs } from "expo-router";
+import { View, Text, StyleSheet, ActivityIndicator, Button } from "react-native";
+import { router, Tabs } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { getToken } from "../../lib/tokenExtract";
+import { supabase } from "../../lib/supabase";
 
-
+const signOut=async()=>{
+    await supabase.auth.signOut()
+}
 const fetchProfile = async () => {
     const token=await getToken()
     try {
@@ -55,6 +58,15 @@ export default function ProfileScreen() {
             <Text style={styles.infoText}>Email: {profile?.email}</Text>
         </View>
         )}
+        <View style={styles.buttonContainer}>
+    <Button 
+        title="Sign out" 
+        color="#ef4444" 
+        onPress={async () => {
+            signOut()
+        }} 
+    />
+</View>
     </View>
     );
 }

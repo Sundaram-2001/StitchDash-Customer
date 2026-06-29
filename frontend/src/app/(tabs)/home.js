@@ -2,6 +2,7 @@ import { Tabs } from "expo-router";
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Image, ActivityIndicator } from "react-native";
 import { getDeviceLocality } from "../../../utils/location";
 import { useEffect, useState } from "react"; 
+import { SearchBar } from "react-native-screens";
 
 export default function Home() {
   const [location, setLocation] = useState("📍 Loading Location..");
@@ -38,7 +39,11 @@ export default function Home() {
     <ScrollView style={styles.masterContainer} showsVerticalScrollIndicator={false}>
       <Tabs.Screen options={{ headerTitle: `📍 Delivering to: ${location}` }} />
       
-      
+        <View>
+          <SearchBar>
+            <Text>Hi</Text>
+          </SearchBar>
+        </View>
       <View style={styles.headerTextWrapper}>
         <Text style={styles.serifHeading}>
           Tailored for you.
