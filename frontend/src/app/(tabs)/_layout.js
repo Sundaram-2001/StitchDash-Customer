@@ -24,7 +24,7 @@ export default function TabsLayout() {
         <Tabs.Screen
         name="home"
         options={{
-          headerTitle:"📍 Locating you...",
+          headerShown:false,
           headerTitleStyle: {
           // color: "#a1a1aa", 
       fontSize: 18,
