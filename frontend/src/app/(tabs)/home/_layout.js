@@ -3,11 +3,11 @@ import { Stack } from "expo-router";
 export default function HomeStackLayout() {
     return (
     <Stack>
-      {/* This renders your main feed screen */}
         <Stack.Screen 
         name="index" 
         options={{ 
-            headerShown: false 
+            headerShown: false,
+            headerTitle:"📍 Locating you.."
         }} 
         />
 
