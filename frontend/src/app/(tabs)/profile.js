@@ -10,7 +10,7 @@ const signOut=async()=>{
 const fetchProfile = async () => {
     const token=await getToken()
     try {
-    const response = await fetch("https://frisbee-sprung-charbroil.ngrok-free.dev/profile",{
+    const response = await fetch("https://frisbee-sprung-charbroil.ngrok-free.devprofile",{
         method:"GET",
         headers:{
             "Content_Type":"application/json",
