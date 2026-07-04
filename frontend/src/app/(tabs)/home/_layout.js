@@ -20,6 +20,15 @@ export default function HomeStackLayout() {
             headerTintColor: "#09090b"
         }} 
         />
+        <Stack.Screen 
+        name="alterations" 
+        options={{ 
+            title: "Alterations",
+            headerStyle: { backgroundColor: "#ffffff" },
+            headerShadowVisible: false,
+            headerTintColor: "#09090b"
+        }} 
+        />
     </Stack>
     );
 }
